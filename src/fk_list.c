@@ -31,6 +31,11 @@ bool list_is_empty(List *self)
     return false;
 }
 
+int list_size(List *self)
+{
+    return self->size;
+}
+
 void list_reset(List *self)
 {
     self->cur = self->head;

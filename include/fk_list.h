@@ -15,8 +15,8 @@ typedef struct List {
     size_t size;
 } List;
 
-static list_node *new_node(void *data);
 bool list_is_empty(List *self);
+int list_size(List *self);
 void list_reset(List *self);
 void list_push_back(List *self, void *node);
 void list_push_front(List *self, void *node);
