@@ -12,6 +12,7 @@ main: libfk.a
 
 libfk.a: ${OBJ}
 	ar cru ${LIB}/$@ $^
+	rm -rf $^
 
 ${LIB}/%.o: ${SRC}/%.c
 	${CC} -c ${CFLAGS} $< -o $@
