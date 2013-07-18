@@ -16,11 +16,11 @@ libfk.a: ${OBJ}
 ${LIB}/%.o: ${SRC}/%.c
 	${CC} -I${INC} -c ${CFLAGS} $< -o $@
 
-.PHONY: clean
+.PHONY: clean test
 clean:
 	rm -rf lib/*.o lib/*.a
+	rm -rf bin/test*
 
-test: libfk.a
-	${CC} -I${INC} -L${LIB}  main.c -lfk
-
+test:
+	cd tests && make
 
