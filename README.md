@@ -16,5 +16,5 @@
 libfk 採用 LGPL
 歡迎自由修改以及採用
 如果修改了本 libfk ，也請以 LGPL 的方式轉發
-詳情請見 LICENSE.md
+詳情請見 LICENSE
 
