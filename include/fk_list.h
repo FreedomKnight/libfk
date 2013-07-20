@@ -28,6 +28,7 @@ void *list_get_back(List *self);
 void *list_get_front(List *self);
 bool list_has_cur(List *self);
 void *list_get_cur(List *self);
+bool list_delete_cur(List *self);
 bool list_has_next(List *self);
 void *list_get_next(List *self);
 void list_move_next(List *self);

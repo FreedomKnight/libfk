@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdio.h>
 
 typedef struct list_node {
     void *data;
@@ -41,7 +42,7 @@ int list_size(List *self)
 
 void list_reset(List *self)
 {
-    if (self)
+    if (self && self->head)
         self->cur = self->head;
 }
 
@@ -211,19 +212,73 @@ void *list_get_front(List *self)
 
 bool list_has_cur(List *self)
 {
-    if (self && self->cur)
+    /* 
+     * if cur and head are null, there is no cur
+     * if head has item and then cur will be head
+     */
+    if (self && self->cur) {
         return true;
+    } else if (self && !self->cur && self->head) {
+        list_reset(self);
+        return true;
+    }
 
     return false;
 }
 
 void *list_get_cur(List *self)
 {
-    if (self && self->cur) {
+    if (self && list_has_cur(self)) {
         return self->cur->data;
     }
 
     return NULL;
+}
+
+bool list_delete_cur(List *self)
+{
+    if (self && !list_is_empty(self)) {
+        list_node *del_node = list_get_cur(self);
+        /*
+         * handle special case
+         * 1. cur is head, head will set as next
+         * 2. cur is tail, tail should set as tail->prev
+         * 3. list size is 1
+         */
+ 
+        if (list_get_cur(self) == self->head && list_size(self) != 1) {
+            self->head = self->cur->next;
+            self->cur = self->head;
+        } else if (list_size(self) == 1) {
+            self->head = NULL;
+            self->cur = NULL;
+        }
+
+        if (list_get_cur(self) == self->tail && list_size(self) != 1) {
+            self->tail = self->cur->prev;
+            self->cur = NULL;
+        } else if (list_size(self) == 1) {
+            self->tail = NULL;
+            self->cur = NULL;
+        }
+
+        /* connect prev and next */
+        if (del_node->prev)
+            del_node->prev->next = del_node->next;
+
+        if (del_node->next)
+            del_node->next->prev = del_node->prev;
+
+        /* set prev as new cur is default */
+        if (self->cur)
+            self->cur = self->cur->prev;
+
+        free(del_node);
+        self->size--;
+        return true;
+    }
+
+    return false;
 }
 
 bool list_has_next(List *self)
@@ -274,7 +329,6 @@ void list_move_prev(List *self)
         self->cur = self->cur->prev;
     }
 }
-
 
 List *new_list(void)
 {

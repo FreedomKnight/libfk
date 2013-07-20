@@ -72,6 +72,20 @@ int main()
     assert(list_has_prev(list) == false);
     assert(((data *) list_get_front(list)) == NULL);
     assert(((data *) list_get_back(list)) == NULL);
+
+    delete_list(list);
+    list = new_list();
+    list_push_back(list, new_data(5));
+    list_delete_cur(list);
+    assert(list_get_cur(list) == NULL);
+
+    list_push_back(list, new_data(7));
+    list_push_back(list, new_data(6));
+    assert(((data *)list_get_cur(list))->dat == 7);
+    list_move_next(list);
+    assert(((data *)list_get_cur(list))->dat == 6);
+    list_delete_cur(list);
+    assert(((data *)list_get_cur(list))->dat == 7);
     
     
 
